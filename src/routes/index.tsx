@@ -1067,10 +1067,12 @@ function GameView({
       resetAudioChain();
       setDrawn([]);
       setCurrentBall(null);
-      void primeAudio().then(() => {
+      void primeAudio().then(async () => {
         if (!canPlay()) return;
-        void playIntroSound();
-        void playStartSound();
+        // Shekshik (intro) must be fully heard BEFORE Game_Start plays.
+        await playIntroSound();
+        if (!canPlay()) return;
+        await playStartSound();
       });
     }
 
