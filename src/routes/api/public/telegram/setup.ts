@@ -19,7 +19,7 @@ async function tg(token: string, method: string, body: unknown) {
 export const Route = createFileRoute("/api/public/telegram/setup")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
+      GET: async () => {
         const token = process.env.TELEGRAM_BOT_TOKEN;
         if (!token) return Response.json({ ok: false, error: "missing TELEGRAM_BOT_TOKEN" }, { status: 500 });
 
