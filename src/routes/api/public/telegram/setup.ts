@@ -23,11 +23,9 @@ export const Route = createFileRoute("/api/public/telegram/setup")({
         const token = process.env.TELEGRAM_BOT_TOKEN;
         if (!token) return Response.json({ ok: false, error: "missing TELEGRAM_BOT_TOKEN" }, { status: 500 });
 
-        const url = new URL(request.url);
-        const origin = url.origin.includes("id-preview--")
-          ? url.origin.replace("id-preview--", "project--").replace(".lovable.app", "-dev.lovable.app")
-          : url.origin;
-        const webhookUrl = `${origin}/api/public/telegram/webhook`;
+        // Always register the webhook on the Render deployment so Telegram
+        // delivers updates to the live app the mini app runs on.
+        const webhookUrl = `${APP_URL}/api/public/telegram/webhook`;
         const secret = deriveSecret(token);
 
         const setWebhook = await tg(token, "setWebhook", {
